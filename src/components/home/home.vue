@@ -18,7 +18,58 @@
       </el-row>
     </el-header>
     <el-container>
-      <el-aside width="200px" class="aside">Aside</el-aside>
+      <el-aside width="200px" class="aside">
+        <el-menu :unique-opened="true">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-menu"></i>
+              <span>用户管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">用户列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-s-custom"></i>
+              <span>权限管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">角色列表</el-menu-item>
+              <el-menu-item index="1-2">权限列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-goods"></i>
+              <span>商品管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">商品列表</el-menu-item>
+              <el-menu-item index="1-2">分类参数</el-menu-item>
+              <el-menu-item index="1-2">商品分类</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="4">
+            <template slot="title">
+              <i class="el-icon-document"></i>
+              <span>订单管理</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">订单列表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="el-icon-s-data"></i>
+              <span>数据统计</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="1-1">数据报表</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
       <el-main class="main">Main</el-main>
     </el-container>
   </el-container>
@@ -26,7 +77,10 @@
 
 <script>
     export default {
-        name: "home"
+        name: "home",
+      methods:{
+
+      }
     }
 </script>
 
@@ -59,11 +113,15 @@
     width: 60px;
     height: 60px;
     border-radius: 100%;
+    margin-left: -50px;
   }
   .middle{
     line-height: 60px;
   }
   .logout{
     text-decoration: none;
+  }
+  .el-menu{
+    height: 100%;
   }
 </style>
