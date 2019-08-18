@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="2">
           <div class="grid-content bg-purple">
-            <a class="logout" href="">退出</a>
+            <a class="logout" @click="handleLogOut">退出</a>
           </div>
         </el-col>
       </el-row>
@@ -85,7 +85,12 @@
           }
       },
       methods:{
-
+        handleLogOut(){
+          // 清除token、返回到登录页面、退出成功提示
+          localStorage.removeItem('token');
+          this.$message.success('退出成功');
+          this.$router.push({name:'login'})
+        }
       }
     }
 </script>
@@ -126,6 +131,7 @@
   }
   .logout{
     text-decoration: none;
+    cursor: pointer;
   }
   .el-menu{
     height: 100%;
