@@ -1,6 +1,6 @@
 <template>
-  <!--面包屑-->
   <el-card class="box-card">
+    <!--面包屑-->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
@@ -19,6 +19,44 @@
           <el-button type="success" plain>添加用户</el-button>
       </el-col>
     </el-row>
+
+    <!--表格-->
+    <el-table
+      :data="tableData"
+      border
+      style="width: 100%">
+      <el-table-column
+        type="index"
+        label="#"
+        width="60">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="80">
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        label="邮箱">
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="创建日期">
+      </el-table-column>
+      <el-table-column
+        prop="status"
+        label="用户状态">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="操作">
+      </el-table-column>
+    </el-table>
+
   </el-card>
 </template>
 
@@ -27,8 +65,31 @@
       name: "users",
       data(){
           return{
-            query:''
+            query:'',
+            pagenum:1,
+            pagesize:2,
+            tableData: [{
+              name: '王小虎',
+              email:'1223456@qq.com',
+              phone:'1234556788',
+              date: '2016-05-02',
+              status:'oo',
+              address: '上海市普陀区金沙江路 1518 弄'
+            }]
           }
+      },
+      created(){
+        this.getUserList();
+      },
+      methods:{
+        // 获取用户列表的请求
+       async getUserList(){
+         console.log(1111);
+         const AUTH_TOKEN = localStorage.getItem('token');
+         this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+          const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+          console.log(res);
+       }
       }
     }
 </script>
@@ -38,13 +99,16 @@
     height: 100%;
   }
   .input-search{
-    width: 600px;
+    width: 500px;
   }
   .search-row{
-    margin-left: -500px;
+    float: left;
   }
   .search-inp{
     height: 90px;
     line-height: 90px;
+  }
+  el-table-column{
+    height: 46px;
   }
 </style>
