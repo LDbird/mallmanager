@@ -74,7 +74,7 @@
         </el-menu>
       </el-aside>
       <el-main class="main">
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -84,10 +84,10 @@
     export default {
         name: "home",
       beforeCreate(){
-          const token = localStorage.getItem('token');
-          if (!token){
-            this.$router.push({name:'login'})
-          }
+          // const token = localStorage.getItem('token');
+          // if (!token){
+          //   this.$router.push({name:'login'})
+          // }
       },
       methods:{
         handleLogOut(){
