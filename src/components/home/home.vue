@@ -84,14 +84,14 @@
     export default {
         name: "home",
       beforeCreate(){
-          // const token = localStorage.getItem('token');
-          // if (!token){
-          //   this.$router.push({name:'login'})
-          // }
+          const token = localStorage.getItem('token');
+          if (!token){
+            this.$router.push({name:'login'})
+          }
       },
       methods:{
         handleLogOut(){
-          // 清除token、返回到登录页面、退出成功提示
+          // 清除token=>返回到登录页面=>退出成功提示
           localStorage.removeItem('token');
           this.$message.success('退出成功');
           this.$router.push({name:'login'})

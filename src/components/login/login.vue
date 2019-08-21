@@ -35,17 +35,17 @@
         async handleLogin(){
           const res = await this.$http.post('login',this.formLabelAlign);
             // console.log(res);
-            // 解构赋值
+            // ***解构赋值***
             const {data,meta:{msg,status}} = res.data;
 
             if(status === 200){
               // >如果用户没登录，直接通过url标识来到home组件，这样是不可以的
               // >解决:在登录成功时，保存正确用户的token => localStorage.setItem('token',data.token)
-              // localStorage.setItem('token',data.token);
-              // this.$router.push({name:'home'});
-              // this.$message.success(msg);
+              localStorage.setItem('token',data.token);
+              this.$router.push({name:'home'});
+              this.$message.success(msg);
             }else {
-              // this.$message.error(msg);
+              this.$message.error(msg);
             }
         }
       }

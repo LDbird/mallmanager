@@ -22,7 +22,7 @@
 
     <!--表格-->
     <el-table
-      :data="tableData"
+      :data="userList"
       border
       style="width: 100%">
       <el-table-column
@@ -31,7 +31,7 @@
         width="60">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="username"
         label="姓名"
         width="80">
       </el-table-column>
@@ -40,19 +40,19 @@
         label="邮箱">
       </el-table-column>
       <el-table-column
-        prop="phone"
+        prop="mobile"
         label="电话">
       </el-table-column>
       <el-table-column
-        prop="date"
+        prop="create_time"
         label="创建日期">
       </el-table-column>
       <el-table-column
-        prop="status"
+        prop="mg_state"
         label="用户状态">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="operate"
         label="操作">
       </el-table-column>
     </el-table>
@@ -66,16 +66,11 @@
       data(){
           return{
             query:'',
+            userList: [], // 表格绑定的数据
+            // 分页相关的数据
+            total:0,
             pagenum:1,
-            pagesize:2,
-            tableData: [{
-              name: '王小虎',
-              email:'1223456@qq.com',
-              phone:'1234556788',
-              date: '2016-05-02',
-              status:'oo',
-              address: '上海市普陀区金沙江路 1518 弄'
-            }]
+            pagesize:2
           }
       },
       created(){
@@ -86,9 +81,19 @@
        async getUserList(){
          console.log(1111);
          const AUTH_TOKEN = localStorage.getItem('token');
+         // 设置请求头，使用token认证
          this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-          const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
-          console.log(res);
+         const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+         console.log(res);
+         const {meta:{status,msg},data:{users,total}} = res.data;
+         if(status === 200){
+           // 给表格数据赋值=>给总数赋值(分页)=>提示用户获取数据成功
+           this.userList = users;
+           this.total = total;
+           this.$message.success('获取数据成功')
+         }else {
+
+         }
        }
       }
     }
