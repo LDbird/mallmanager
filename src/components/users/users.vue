@@ -43,19 +43,51 @@
         prop="mobile"
         label="电话">
       </el-table-column>
+
+      <!--如果单元格内显示的内容不是字符串(文本),需要给被现实的内容外层包裹一个template小容器-->
       <el-table-column
-        prop="create_time"
         label="创建日期">
+        <!--template内部要用数据 设置slot-scope属性,
+          该属性的值要用数据(create_time)的数据源(userList)
+          userList.row->数组中的每个对象
+        -->
+        <template slot-scope="scope">{{scope.row.create_time|fmtdate}}</template>
       </el-table-column>
+
       <el-table-column
-        prop="mg_state"
         label="用户状态">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.mg_state"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </template>
       </el-table-column>
+
       <el-table-column
         prop="operate"
         label="操作">
+        <template slot-scope="scope">
+          <el-row>
+            <el-button size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
+            <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
+            <el-button size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
+          </el-row>
+        </template>
       </el-table-column>
     </el-table>
+
+    <!--分页-->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[2, 4, 6, 8]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
 
   </el-card>
 </template>
@@ -70,7 +102,7 @@
             // 分页相关的数据
             total:0,
             pagenum:1,
-            pagesize:2
+            pagesize:2,
           }
       },
       created(){
@@ -92,9 +124,22 @@
            this.total = total;
            this.$message.success('获取数据成功')
          }else {
-
+           this.$message.success('获取数据失败')
          }
-       }
+       },
+
+        // 分页相关的方法
+        handleSizeChange(val) {
+          this.pagesize = val;
+          this.pagenum = 1;
+          this.getUserList();
+          console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+          this.pagenum = val;
+          this.getUserList();
+          console.log(`当前页: ${val}`);
+        }
       }
     }
 </script>
