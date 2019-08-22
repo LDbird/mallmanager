@@ -187,6 +187,7 @@
           return{
             query:'',
             userList: [], // 表格绑定的数据
+            
             // 分页相关的数据
             total:0,
             pagenum:1,
@@ -209,7 +210,7 @@
             dialogFormVisibleRole:false,
             curRoleId:-1,
             curUserName:'',
-            roleAry:[],
+            roleAry:[], // 存放用户所有的角色
 
             // 当前user的id
             // curUserId:-1
@@ -346,7 +347,7 @@
          // 一打开对话框，显示当前用户的用户名和角色名
           this.curUserName = user.username;
 
-          // 获取所有的角色
+          // 获取所有的角色,动态生成el-option
           const res1 = await this.$http.get(`roles`);
           console.log(res1);
           this.roleAry = res1.data.data;
@@ -355,7 +356,7 @@
           const res = await this.$http.get(`users/${user.id}`);
           // console.log(res);
           // 获取当前用的角色id=>rid
-          this.curRoleId = res.data.rid;
+          this.curRoleId = res.data.data.rid;
           // 分配角色的打开对话框
           this.dialogFormVisibleRole = true;
         }
