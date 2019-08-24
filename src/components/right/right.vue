@@ -33,7 +33,6 @@
           </template>
         </el-table-column>
       </el-table>
-
     </el-card>
 </template>
 
@@ -51,7 +50,8 @@
       methods:{
         async getRightList(){
           // 除了登录之外的所有请求，都要设置头部
-          const res = await this.$http.get('rights/list');
+          // 请求路径：rights/:type
+          const res = await this.$http.get(`rights/list`);
           console.log(res);
           this.rightList = res.data.data;
         }
