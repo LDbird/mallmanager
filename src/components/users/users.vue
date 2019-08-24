@@ -222,10 +222,6 @@
       methods:{
         // 获取用户列表的请求
        async getUserList(){
-         console.log(1111);
-         const AUTH_TOKEN = localStorage.getItem('token');
-         // 设置请求头，使用token认证
-         this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN;
          const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
          console.log(res);
          const {meta:{status,msg},data:{users,total}} = res.data;

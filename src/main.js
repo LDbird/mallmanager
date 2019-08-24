@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/reset.css'
 import MyHttpServer from './plugins/http'
 import moment from 'moment'
+import MyBread from './components/cuscom/myBread'
+/*大家都要用的东西我们都要在main.js中去引入*/
 
 Vue.config.productionTip = false
 
@@ -19,6 +21,9 @@ Vue.use(MyHttpServer)
 Vue.filter('fmtdate',(v)=>{
   return moment(v).format('YYYY-MM-DD')
 })
+
+// 全局自定义组件 (全局组件，在哪里都可以用)
+Vue.component(MyBread.name,MyBread)
 
 /* eslint-disable no-new */
 new Vue({

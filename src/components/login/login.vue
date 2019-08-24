@@ -34,7 +34,6 @@
         // ES7新语法：async+await；就是让异步操作看起来像同步操作，这个新语法是generator的语法糖
         async handleLogin(){
           const res = await this.$http.post('login',this.formLabelAlign);
-            // console.log(res);
             // ***解构赋值***
             const {data,meta:{msg,status}} = res.data;
 
