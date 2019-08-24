@@ -4,11 +4,11 @@ const MyHttpServer = {}
 MyHttpServer.install = (Vue) => {
   axios.defaults.baseURL = 'http://3.112.132.86:8878/api/private/v1/'
 
-  // 在请求发起之前，要设置头部 ==> axios拦截器
+  // 在请求发起之前，要设置头部 ==> axios拦截器 ==> axios文档
   // 添加axios请求拦截器==>在发起请求是就会触发该拦截器
   axios.interceptors.request.use(function (config) {
     console.log('拦截器触发');
-    console.log(config);
+    console.log(config); // config
     if (config.url !== 'login'){
       console.log('kiki');
       const AUTH_TOKEN = localStorage.getItem('token');

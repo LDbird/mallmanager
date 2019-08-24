@@ -30,7 +30,7 @@
       :data="userList"
       height="400px"
       border
-      style="width: 100%">
+      style="width: 100%;line-height: 45px">
       <el-table-column
         type="index"
         label="#"

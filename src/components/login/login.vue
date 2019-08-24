@@ -36,7 +36,6 @@
           const res = await this.$http.post('login',this.formLabelAlign);
             // ***解构赋值***
             const {data,meta:{msg,status}} = res.data;
-
             if(status === 200){
               // >如果用户没登录，直接通过url标识来到home组件，这样是不可以的
               // >解决:在登录成功时，保存正确用户的token => localStorage.setItem('token',data.token)
