@@ -228,11 +228,11 @@
          if(status === 200){
            // 给表格数据赋值=>给总数赋值(分页)=>提示用户获取数据成功
            this.userList = users;
-           console.log(users);
+           // console.log(users);
            this.total = total;
-           this.$message.success('获取数据成功')
+           this.$message.success(msg)
          }else {
-           this.$message.success('获取数据失败')
+           this.$message.success(msg)
          }
        },
 

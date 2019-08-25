@@ -10,6 +10,12 @@ import MyHttpServer from './plugins/http'
 import moment from 'moment'
 import MyBread from './components/cuscom/myBread'
 /*大家都要用的东西我们都要在main.js中去引入*/
+import Router from 'vue-router'
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.config.productionTip = false
 

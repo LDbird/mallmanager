@@ -94,17 +94,22 @@
 
         :default-expanded-keys="[2, 3]"
         :default-checked-keys="[5]"
+
+        default-expanded-all 一行代码搞定default-expanded-keys三层嵌套
        -->
         <el-tree
+          ref="tree"
           :data="treeList"
           show-checkbox
           node-key="id"
+          :default-expanded-keys="arrexpand"
+          :default-checked-keys='arrcheck'
           :props="defaultProps">
         </el-tree>
 
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisibleRight = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisibleRight = false">确 定</el-button>
+          <el-button type="primary" @click="setRoleRight()">确 定</el-button>
         </div>
       </el-dialog>
     </el-card>
@@ -122,7 +127,15 @@
             defaultProps: {
               children: 'children',
               label: 'authName'
-            }
+            },
+
+            // 所有层级下的权限id
+            arrexpand:[],
+            // 该角色的权限id
+            arrcheck:[],
+
+            // 当前角色id
+            curRoleId:-1
           }
         },
       created() {
@@ -135,7 +148,7 @@
           const res = await this.$http.get('roles');
           // console.log(res);
           this.roleList = res.data.data;
-          console.log(this.roleList);
+
         },
 
         // 删除权限
@@ -161,10 +174,65 @@
 
         // 修改/分配 权限 - 打开对话框
         async showSetUserRole(role){
+          // 给curRoleId赋值
+          this.curRoleId = role.id;
+
           this.dialogFormVisibleRight = true;
           const res = await this.$http.get(`rights/tree`);
           console.log(res);
           this.treeList = res.data.data;
+          console.log(this.treeList);
+
+          // 把所有层级的权限id都获取到放到数组arrexpand中
+          var arrtemp1 = [];
+          this.treeList.forEach(item1=>{
+            arrtemp1.push(item1.id);
+            item1.children.forEach (item2=>{
+              arrtemp1.push(item2.id);
+              item2.children.forEach(item3=>{
+                arrtemp1.push(item3.id);
+              })
+            })
+          });
+          // console.log(arrtemp1);
+          this.arrexpand = arrtemp1;
+
+          // 获取当前角色的权限id
+          var arrtemp2 = [];
+          role.children.forEach(item1=>{
+            // arrtemp2.push(item1.id);
+            item1.children.forEach(item2=>{
+              // arrtemp2.push(item2.id);
+              item2.children.forEach(item3=>{
+                arrtemp2.push(item3.id)
+              })
+            })
+          });
+          console.log(arrtemp2);
+          this.arrcheck = arrtemp2;
+        },
+
+        // 修改当前角色的权限
+        async setRoleRight(){
+          // 请求路径：roles/:roleId/rights
+          // rids 树形节点中所有全选和半选的label的id []
+          // roleId 当前要修改权限的角色id
+
+          // 在js中调用el-tree方法==>this.$refs.tree.方法名
+          // 获取全选和半选的id的数组==>element-ui提供的方法
+          // getCheckedKeys(全选)   getHalfCheckedKeys(半选)
+          let arr1 = this.$refs.tree.getCheckedKeys();
+          let arr2 = this.$refs.tree.getHalfCheckedKeys();
+          // ES6=>扩展运算符
+          let arr = [...arr1,...arr2];
+          // console.log(arr1, arr2);
+          // console.log(arr);
+
+          const res = await this.$http.post(`roles/${this.curRoleId}/rights`,{rids:arr.join(',')});
+          // console.log(res);
+          // 更新视图=>关闭对话框
+          this.getRoleList();
+          this.dialogFormVisibleRight = false;
         }
       }
     }

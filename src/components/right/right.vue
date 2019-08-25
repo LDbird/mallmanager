@@ -54,6 +54,7 @@
           const res = await this.$http.get(`rights/list`);
           console.log(res);
           this.rightList = res.data.data;
+          console.log(this.rightList);
         }
       }
     }
