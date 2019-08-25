@@ -275,7 +275,8 @@
             // 提示成功 => 关闭对话框 => 更新视图 => 清除文本框
             this.$message.success(msg);
             this.getUserList();
-            this.form = {}
+            this.form = {};
+            this.$message.warning('用户添加成功');
           }else {
             this.$message.warning('用户添加失败');
           }
@@ -314,7 +315,7 @@
           });
         },
 
-        // 编辑用户
+        // 显示编辑用户对话框
         showEditUser(user){
          this.form = user;
          // 获取用户数据
@@ -325,10 +326,10 @@
         async editUser(){
          // user/:id
           const res = await this.$http.put(`users/${this.form.id}`,this.form);
-          console.log(res);
+          console.log(res,11111);
           // 关闭对话框=>更新视图
-          this.dialogFormVisibleEdit = false;
           this.getUserList();
+          this.dialogFormVisibleEdit = false;
         },
 
         // 改变用户状态

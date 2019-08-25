@@ -23,52 +23,19 @@
           :unique-opened="true"
           :router="true"
         >
-          <el-submenu index="1">
+          <el-submenu :index="item.order.toString()" :key="index" v-for="(item,index) in menus">
             <template slot="title">
               <i class="el-icon-menu"></i>
-              <span>用户管理</span>
+              <span>{{item.authName}}</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="users">用户列表</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-s-custom"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="role">角色列表</el-menu-item>
-              <el-menu-item index="right">权限列表</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-goods"></i>
-              <span>商品管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">商品列表</el-menu-item>
-              <el-menu-item index="1-2">分类参数</el-menu-item>
-              <el-menu-item index="1-2">商品分类</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-document"></i>
-              <span>订单管理</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">订单列表</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="el-icon-s-data"></i>
-              <span>数据统计</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">数据报表</el-menu-item>
+              <el-menu-item
+                :index="item1.path"
+                :key="index"
+                v-for="(item1,index) in item.children">
+                <i class="el-icon-circle-check"></i>
+                <span>{{item1.authName}}</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
@@ -82,12 +49,20 @@
 
 <script>
     export default {
-        name: "home",
+      name: "home",
+      data(){
+        return{
+          menus:[]
+        }
+      },
       beforeCreate(){
-          const token = localStorage.getItem('token');
-          if (!token){
-            this.$router.push({name:'login'})
-          }
+          // const token = localStorage.getItem('token');
+          // if (!token){
+          //   this.$router.push({name:'login'})
+          // }
+      },
+      created(){
+        this.getMenus();
       },
       methods:{
         handleLogOut(){
@@ -95,6 +70,13 @@
           localStorage.removeItem('token');
           this.$message.success('退出成功');
           this.$router.push({name:'login'})
+        },
+
+        // 获取导航数据
+        async getMenus(){
+          const res = await this.$http.get(`menus`);
+          console.log(res);
+          this.menus = res.data.data;
         }
       }
     }
