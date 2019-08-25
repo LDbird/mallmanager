@@ -174,7 +174,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleRole = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleRole = false">确 定</el-button>
+        <el-button type="primary" @click="setRole">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -211,6 +211,9 @@
             curRoleId:-1,
             curUserName:'',
             roleAry:[], // 存放用户所有的角色
+
+            // 当前用户id
+            curUserId:-1
 
             // 当前user的id
             // curUserId:-1
@@ -341,6 +344,7 @@
 
         // 用户分配角色
         async showSetUserRole(user){
+         this.curUserId = user.id;
          // 一打开对话框，显示当前用户的用户名和角色名
           this.curUserName = user.username;
 
@@ -356,6 +360,15 @@
           this.curRoleId = res.data.data.rid;
           // 分配角色的打开对话框
           this.dialogFormVisibleRole = true;
+        },
+
+        // 分配角色
+        async setRole(){
+         const res = await this.$http.put(`users/${this.curUserId}/role`,{
+           rid:this.curRoleId
+         });
+          console.log(res);
+          this.dialogFormVisibleRole = false
         }
       }
     }
